@@ -29,6 +29,28 @@ After running the simulation, the following observations were made:
 
 It is important to note that the simulation and recovery functions implemented in this exercise are based on simplified formulas. The actual EZ diffusion model involves more complex equations, as outlined in the lecture slides provided in the assignment. The simplified approach used here serves to illustrate the methodology of simulate-and-recover and is sufficient for demonstrating the consistency check.
 
+
+### Why Some Estimates of t Are Negative
+In this implementation of the EZ diffusion model, we observed that some recovered non-decision times (t_{\hat}) are negative. This occurs primarily because our simulation and recovery procedures are not fully aligned with the assumptions of the original EZ diffusion model. Specifically, we used a simplified approach in which:
+
+Only Correct Responses Were Simulated
+We generated reaction times (RT) assuming all trials result in correct decisions, and we did not simulate errors. In contrast, the EZ diffusion model’s closed-form solutions require an estimate of the empirical accuracy (p), which should be based on both correct and incorrect responses in the data. When there are no error trials, the model is forced to rely on a theoretical p derived from the true parameters, which may not reflect the actual data variance.
+
+Extreme Parameter Ranges
+Our parameter ranges (e.g., 
+𝑎∈[0.5,2.0]a∈[0.5,2.0], 𝑣∈[0.5,2.0]v∈[0.5,2.0], and 𝑡∈[0.1,0.5]
+t∈[0.1,0.5]) allow for combinations where drift rate (𝑣v) is large and boundary separation (a) is small. Under such conditions, the average decision time can be extremely short, sometimes leading to a mean reaction time (MRT) that is less than the theoretical lower bound implied by the model. Consequently, the recovered t_{\hat} can become negative.
+
+Simplified Formulas vs. Full Model
+We used a simplified version of the EZ diffusion model’s inverse Gaussian simulation without explicitly modeling error responses. The standard EZ approach typically accounts for both correct and incorrect RT distributions, and obtains the empirical accuracy (p) from the simulated data itself. By relying on theoreticalp and ignoring error responses, we create a mismatch between the assumptions of the recovery formulas and the data we generate.
+
+Because of these factors, the model occasionally produces negative t_{\hat} estimates, which are not meaningful from a theoretical standpoint (non-decision time should always be positive). In a more complete simulation, we would:
+
+-**Generate both correct and incorrect responses (and record their RTs).**
+-**Estimate accuracy (p) directly from the simulated data.**
+-**Possibly restrict parameter ranges to avoid extreme cases where the EZ model assumptions break down.**
+These improvements would help ensure that the estimated t_{\hat} values remain within a plausible range and that the model’s assumptions better match the simulated data.
+
 ### Conclusion
 
 Overall, the exercise confirms that the EZ diffusion model can recover its parameters from simulated data under controlled conditions. The results show:
