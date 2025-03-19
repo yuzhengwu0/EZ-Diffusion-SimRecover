@@ -47,8 +47,11 @@ We used a simplified version of the EZ diffusion model’s inverse Gaussian simu
 Because of these factors, the model occasionally produces negative t_{\hat} estimates, which are not meaningful from a theoretical standpoint (non-decision time should always be positive). In a more complete simulation, we would:
 
 -**Generate both correct and incorrect responses (and record their RTs).**
+
 -**Estimate accuracy (p) directly from the simulated data.**
+
 -**Possibly restrict parameter ranges to avoid extreme cases where the EZ model assumptions break down.**
+
 These improvements would help ensure that the estimated t_{\hat} values remain within a plausible range and that the model’s assumptions better match the simulated data.
 
 ### Conclusion
